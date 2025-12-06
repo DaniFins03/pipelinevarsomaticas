@@ -126,7 +126,7 @@ Output esperado:
 **6.Download dos resultados**
 
 Total de 4 arquivos de resultado: 
->Definicar cada um deles com nase na documentação do CGI (TODOS)
+>Definicar cada um deles com base na documentação do CGI (TODOS - ver no site)
 - alterations.tsv: ...
 - biomarkers.tsv: ...
 - input01.tsv: ...
@@ -149,6 +149,48 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 with open('/content/results/WP048/WP048-cgi.zip', 'wb') as fd:
     fd.write(r._content)
 ```
+
+ **7. Descompactar o zip com os resultados**
+
+ ```
+%%bash 
+unzip /content/results/WP048/WP048-cgi.zip -d /content/results/WP048/
+```
+
+Output esperado: 
+
+```
+Archive:  /content/results/WP048/WP048-cgi.zip
+  inflating: /content/results/WP048/alterations.tsv  
+  inflating: /content/results/WP048/biomarkers.tsv  
+  inflating: /content/results/WP048/input01.tsv  
+  inflating: /content/results/WP048/summary.txt
+```
+
+**8. Visualizar a tabela** `alterations.tsv`
+
+Instalar lib pandas `pip install pandas `
+
+```
+%%bash 
+pip install pandas
+```
+
+Output esperado: 
+
+```
+Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (2.2.2)
+Requirement already satisfied: numpy>=1.26.0 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.0.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+
+[ ]
+```
+
+
+
 
 
 
