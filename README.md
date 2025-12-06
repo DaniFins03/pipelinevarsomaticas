@@ -38,3 +38,120 @@ CHR	POS	REF	ALT
 chr1	114716123	C	T
 chr9	5073770	G	T
 ```
+
+**3. Enviar job para Cancer Genome Interpreter (CGI) API**
+>Fonte: https://www.cancergenomeinterpreter.org/rest_api
+
+Após filtrar apenas as colunas de interesse (CHR, POS, REF, ALT), agora podemos enviar vir REST-API as variantes somáticas da amostra WP048.
+
+Nota: Altere a variável {SEU_TOKEN} para o Token do CGI criado para sua conta.
+
+```python
+import requests
+headers = {'Authorization': 'danifinsbiomed@gmail.com {SEU_TOKEN}'}
+payload = {'cancer_type': 'HEMATO', 'title': 'Somatic MF WP048', 'reference': 'hg38'}
+r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
+                headers=headers,
+                files={
+                        'mutations': open('/content/df_WP048-cgi.txt', 'rb')
+                        },
+                data=payload)
+r.json()
+```
+Output esperado: 
+```
+c22ecf2af788d65ec257
+```
+
+**4. Status do JobID**
+
+Verifique o `status` do seu JobID para identificar se a análise terminou ou se houve algum erro.
+
+Status possíveis são: Running, Error ou Done.
+
+```python
+import requests
+job_id ="c22ecf2af788d65ec257"
+
+headers = {'Authorization': 'danifinsbiomed@gmail.com {SEU_TOKEN}'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers)
+r.json()
+```
+
+Output esperado: 
+```
+{'status': 'Done',
+ 'metadata': {'id': 'c22ecf2af788d65ec257',
+  'user': 'danifinsbiomed@gmail.com',
+  'title': 'Somatic MF WP048',
+  'cancertype': 'HEMATO',
+  'reference': 'hg38',
+  'dataset': 'input.tsv',
+  'date': '2025-12-06 14:05:09'}}
+```
+
+**5.Log completo do JoID**
+
+Aqui, podemos verificar o status em cada etapa do CGI.
+
+``` python
+import requests
+job_id ="c22ecf2af788d65ec257"
+
+headers = {'Authorization': 'danifinsbiomed@gmail.com {SEU_TOKEN}'}
+payload={'action':'logs'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
+r.json()
+```
+
+Output esperado: 
+
+```
+{'status': 'Done',
+ 'logs': ['# cgi analyze input.tsv -c HEMATO -g hg38',
+  '2025-12-06 15:05:13,869 INFO     Parsing input01.tsv\n',
+  '2025-12-06 15:05:17,384 INFO     Running VEP\n',
+  '2025-12-06 15:05:18,781 INFO     Check cancer genes and consensus roles\n',
+  '2025-12-06 15:05:18,859 INFO     Annotate BoostDM mutations\n',
+  '2025-12-06 15:05:19,044 INFO     Annotate OncodriveMUT mutations\n',
+  '2025-12-06 15:05:21,677 INFO     Annotate validated oncogenic mutations\n',
+  '2025-12-06 15:05:21,830 INFO     Check oncogenic classification\n',
+  '2025-12-06 15:05:21,891 INFO     Matching biomarkers\n',
+  '2025-12-06 15:05:21,979 INFO     Prescription finished\n',
+  '2025-12-06 15:05:21,990 INFO     Aggregate metrics\n',
+  '2025-12-06 15:05:29,952 INFO     Compress output files\n',
+  '2025-12-06 15:05:30,008 INFO     Analysis done\n']}
+```
+
+**6.Download dos resultados**
+
+Total de 4 arquivos de resultado: 
+>Definicar cada um deles com nase na documentação do CGI (TODOS)
+- alterations.tsv: ...
+- biomarkers.tsv: ...
+- input01.tsv: ...
+- summary.txt: ...
+
+```
+%%bash
+#Criar diretório com ID da amostra dentro de results
+mkdir -p results/WP048
+```
+
+```
+Output esperado:
+import requests
+job_id ="c22ecf2af788d65ec257"
+
+headers = {'Authorization': 'danifinsbiomed@gmail.com 3f6ba960478b9fc33a5b'}
+payload={'action':'download'}
+r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, headers=headers, params=payload)
+with open('/content/results/WP048/WP048-cgi.zip', 'wb') as fd:
+    fd.write(r._content)
+```
+
+
+
+
+
+
