@@ -257,7 +257,7 @@ for path in files:
 
 df_final = pd.concat(dfs, ignore_index=True)
 
-print("\n🧬 Tabela final criada com sucesso!")
+print("Tabela final criada com sucesso!")
 df_final
 ```
 
