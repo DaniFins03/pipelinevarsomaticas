@@ -1,5 +1,5 @@
 ## Pipeline de variantes de câncer somáticas ##
-Nesta aula, iremos aprender o passo a passo de filtragem de variantes de câncer somáticas do VCF até o Cancer Genome interpreter (CGI), na busca de distinguir variantes drivers ou passengers de câncer do seu VCF!
+Nesta aula, iremos aprender o passo a passo de filtragem de variantes de câncer somáticas do VCF até o Cancer Genome interpreter (CGI), na busca de distinguir variantes drivers ou passengers de câncer do seu VCF! Neste exemplo específico, iremos processar a amostra **WP048**. Ao final, teremos o link do Google Colab, que demonstra o mesmo pipeline aplicado para as amostras **WP017, WP019, WP058 e WP068**. E também, uma tabela geral, que reúne informações das 5 amostras analisadas.
 
 **1. Clonar o git imabrasil-hg38**
 
@@ -222,6 +222,22 @@ Output esperado:
 Nota: Para gerar a tabela no girhub, puxada do collab, é necessário colocar no modo de visualização de tabela selecionando o unico no canto superior direito do output, para uma tabela em formato melhor, selecionar o ícone de "cópia" e selecionar a opção "markdown". Após isso, colar no github (para uma visualização mais homegênea).
 
 Nota 2: Outra opção, é utilizar o site https://www.tablesgenerator.com/markdown_tables (copiar a tabela no site).
+
+
+
+**Código de processamento das amostras WP017, WP019, WP058 e WP068**
+
+Link para o google Colab : https://colab.research.google.com/drive/1NgdeDoazeNgxKI9XA7X3U1KLE14ycaY3?usp=sharing
+
+Obs: Vale destacar que, em caso de o pandas já ter sido instalado no processamento de uma das amostras, não há necessidade de instalá-lo de novo, contanto que não saia da página e o servidor não desconecte. 
+
+
+**Tabela Geral das variantes somáticas de câncer presentes nas amostras**
+
+
+
+
+
 
 
 
