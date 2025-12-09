@@ -46,7 +46,7 @@ chr9	5073770	G	T
 
 ___
 
-**3. ENVIAR JOB PARA P CANCER GENOME INTERPRETER (CGI) API**
+**3. ENVIAR JOB PARA CÂNCER GENOME INTERPRETER (CGI) API**
 
 >Fonte: https://www.cancergenomeinterpreter.org/rest_api
 
