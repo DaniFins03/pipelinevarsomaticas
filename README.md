@@ -138,11 +138,15 @@ Output esperado:
 **6. Download dos resultados**
 
 Total de 4 arquivos de resultado: 
->Definicar cada um deles com base na documentação do CGI (TODOS - ver no site)
-- alterations.tsv: ...
-- biomarkers.tsv: ...
-- input01.tsv: ...
-- summary.txt: ...
+
+>Definicar cada um deles com base na documentação do CGI (TODOS - ver no site).
+
+- *alterations.tsv:* Arquivo gerado que contém a tabela completa com todas as variantes interpretadas.
+  
+- *biomarkers.tsv:* Arquivo gerado que contém, uma lista de alterações com relevância clínica. Inclui evidências clínicas, níveis de evidência e terapias relacionadas.
+- *input01.tsv:* Arquivo com versão reformulada do arquivo de entrada, convertida internamente para o formato padronizado do CGI. Ajuda a verificar se alguma variante foi ignorada, reformatada ou interpretada diferente.
+  
+- *summary.txt:* Arquivo de texto com estatísticas descritivas gerais da análise para cada amostra.
 
 ```
 %%bash
