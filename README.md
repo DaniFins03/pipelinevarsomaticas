@@ -1,13 +1,15 @@
 ## Pipeline de variantes somáticas de câncer ##
 Nesta aula, iremos aprender o passo a passo de filtragem de variantes de câncer somáticas do VCF até o Cancer Genome interpreter (CGI), na busca de distinguir variantes drivers ou passengers de câncer do seu VCF! Neste exemplo específico, iremos processar a amostra **WP048**. Ao final, teremos o link do Google Colab, que demonstra o mesmo pipeline aplicado para as amostras **WP017, WP019, WP058 e WP068**. E também, uma tabela geral, que reúne informações das 5 amostras analisadas.
 
-**1. Clonar o git imabrasil-hg38**
+____
+
+**1. CLONAR O GIT IMABRASIL-HG38**
 
 ```bash
 !git clone https://github.com/renatopuga/lmabrasil-hg38.git
 ```
 
-output esperado:
+**_Output esperado:_**
 ```
 Cloning into 'lmabrasil-hg38'...
 remote: Enumerating objects: 226, done.
@@ -18,9 +20,9 @@ Receiving objects: 100% (226/226), 8.63 MiB | 29.08 MiB/s, done.
 Resolving deltas: 100% (106/106), done.
 ```
 
+___
 
-
-**2. Agora, vá até o github lmabrasil-hg38 na sessão usando CGI via API Rest no Google Colab**
+**2. AGORA, VÁ ATÉ O GITHUB LMABRASIL-HG38 NA SESSÃO USANDO CGI VIA API REST NO GOOGLE COLAB**
 
 ```bash
 %%bash
@@ -35,16 +37,17 @@ cut -f1-4 /content/lmabrasil-hg38/vep_output/liftOver_WP048_hg19ToHg38.vep.filte
 head df_WP048-cgi.txt
 ```
 
-Output esperado: 
+**_Output esperado:_**
 ```
 CHR	POS	REF	ALT
 chr1	114716123	C	T
 chr9	5073770	G	T
 ```
 
+___
 
+**3. ENVIAR JOB PARA P CANCER GENOME INTERPRETER (CGI) API**
 
-**3. Enviar job para Cancer Genome Interpreter (CGI) API**
 >Fonte: https://www.cancergenomeinterpreter.org/rest_api
 
 Após filtrar apenas as colunas de interesse (CHR, POS, REF, ALT), agora podemos enviar vir REST-API as variantes somáticas da amostra WP048.
@@ -64,14 +67,14 @@ r = requests.post('https://www.cancergenomeinterpreter.org/api/v1',
 r.json()
 ```
 
-Output esperado: 
+**_Output esperado:_**
 ```
 c22ecf2af788d65ec257
 ```
+___
 
 
-
-**4. Status do JobID**
+**4. STATUS DO JOBID**
 
 Verifique o `status` do seu JobID para identificar se a análise terminou ou se houve algum erro.
 
@@ -86,7 +89,7 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 r.json()
 ```
 
-Output esperado: 
+**_Output esperado:_**
 ```
 {'status': 'Done',
  'metadata': {'id': 'c22ecf2af788d65ec257',
@@ -98,9 +101,9 @@ Output esperado:
   'date': '2025-12-06 14:05:09'}}
 ```
 
+___
 
-
-**5. Log completo do JoID**
+**5. LOG COMPLETO DO JOBID**
 
 Aqui, podemos verificar o status em cada etapa do CGI.
 
@@ -114,7 +117,7 @@ r = requests.get('https://www.cancergenomeinterpreter.org/api/v1/%s' % job_id, h
 r.json()
 ```
 
-Output esperado: 
+**_Output esperado:_**
 
 ```
 {'status': 'Done',
@@ -133,13 +136,13 @@ Output esperado:
   '2025-12-06 15:05:30,008 INFO     Analysis done\n']}
 ```
 
+___
 
-
-**6. Download dos resultados**
+**6. DOWNLOAD DOS RESULTADOS**
 
 Total de 4 arquivos de resultado: 
 
->Definicar cada um deles com base na documentação do CGI (TODOS - ver no site).
+>Definir cada um deles com base na documentação do CGI (TODOS - ver no site).
 
 - *alterations.tsv:* Arquivo gerado que contém a tabela completa com todas as variantes interpretadas.
   
@@ -154,8 +157,9 @@ Total de 4 arquivos de resultado:
 mkdir -p results/WP048
 ```
 
+
+**_Output esperado:_**
 ```
-Output esperado:
 import requests
 job_id ="c22ecf2af788d65ec257"
 
@@ -166,16 +170,16 @@ with open('/content/results/WP048/WP048-cgi.zip', 'wb') as fd:
     fd.write(r._content)
 ```
 
+___
 
-
- **7. Descompactar o zip com os resultados**
+ **7. DESCOMPACTAR O ZIP COM OS RESULTADOS**
 
  ```
 %%bash 
 unzip /content/results/WP048/WP048-cgi.zip -d /content/results/WP048/
 ```
 
-Output esperado: 
+**_Output esperado:_**
 
 ```
 Archive:  /content/results/WP048/WP048-cgi.zip
@@ -185,9 +189,9 @@ Archive:  /content/results/WP048/WP048-cgi.zip
   inflating: /content/results/WP048/summary.txt
 ```
 
+___
 
-
-**8. Visualizar a tabela** `alterations.tsv`
+**8. VISUALIZAR A TABELA** `alterations.tsv`
 
 Instalar lib pandas `pip install pandas `
   - O pandas é uma instalação que permite algumas funções, como a criação visual de tabela. Vamos baixar ele exatamente para isso, pois queremos visualizar o resultado em forma de tabela.
@@ -197,7 +201,7 @@ Instalar lib pandas `pip install pandas `
 pip install pandas
 ```
 
-Output esperado: 
+**_Output esperado:_**
 
 ```
 Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (2.2.2)
@@ -216,27 +220,28 @@ Imprimir tabela com alterações:
 pd.read_csv('/content/alterations.tsv',sep='\t',index_col=False, engine= 'python')
 
 ```
-Output esperado:
+**_Output esperado:_**
 
 |index|Input ID|CHROMOSOME|POSITION|REF|ALT|CHR|POS|ALT\_TYPE|STRAND|CGI-Sample ID|CGI-Gene|CGI-Protein Change|CGI-Oncogenic Summary|CGI-Oncogenic Prediction|CGI-External oncogenic annotation|CGI-Mutation|CGI-Consequence|CGI-Transcript|CGI-STRAND|CGI-Type|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |0|input01\_1|1|114716123|C|T|chr1|114716123|snp|+|input01|NRAS|G13D|oncogenic \(predicted and annotated\)|driver \(boostDM: non-tissue-specific model\)|cgi,oncokb,clinvar:13901|chr1:114716123 C\>T|missense\_variant|ENST00000369535|+|SNV|
 |1|input01\_2|9|5073770|G|T|chr9|5073770|snp|+|input01|JAK2|V617F|oncogenic \(annotated\)|passenger \(oncodriveMUT\)|cgi,oncokb,clinvar:14662|chr9:5073770 G\>T|missense\_variant|ENST00000381652|+|SNV|
 
-Nota: Para gerar a tabela no girhub, puxada do collab, é necessário colocar no modo de visualização de tabela selecionando o unico no canto superior direito do output, para uma tabela em formato melhor, selecionar o ícone de "cópia" e selecionar a opção "markdown". Após isso, colar no github (para uma visualização mais homegênea).
+**Nota:** Para gerar a tabela no giThub, puxada do collab, é necessário colocar no modo de visualização de tabela selecionando o unico no canto superior direito do output, para uma tabela em formato melhor, selecionar o ícone de "cópia" e selecionar a opção "markdown". Após isso, colar no github (para uma visualização mais homegênea).
 
-Nota 2: Outra opção, é utilizar o site https://www.tablesgenerator.com/markdown_tables (copiar a tabela no site).
+**Nota 2:** Outra opção, é utilizar o site https://www.tablesgenerator.com/markdown_tables (copiar a tabela no site).
 
+___
 
-
-**Código de processamento das amostras WP017, WP019, WP058 e WP068**
+**CÓDIGO DE PROCESSAMENTO DAS AMOSTRAS WP017, WP019, WP058 E WP068**
 
 Link para o google Colab : https://colab.research.google.com/drive/1NgdeDoazeNgxKI9XA7X3U1KLE14ycaY3?usp=sharing
 
 Obs: Vale destacar que, em caso de o pandas já ter sido instalado no processamento de uma das amostras, não há necessidade de instalá-lo de novo, contanto que não saia da página e o servidor não desconecte. 
 
+___
 
-**Tabela Geral das variantes somáticas de câncer presentes nas amostras**
+**TABELA GERAL DAS VARIANTES SOMÁTICAS DE CÂNCER PRESENTE NAS AMOSTRAS**
 
 Dentro do link do Colab, este código está comentado detalhadamente, sobre cada etapa! Vale a pena dar uma olhada.
 
