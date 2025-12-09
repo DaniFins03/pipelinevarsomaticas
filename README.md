@@ -1,4 +1,4 @@
-## Pipeline de variantes de câncer somáticas ##
+## Pipeline de variantes somáticas de câncer ##
 Nesta aula, iremos aprender o passo a passo de filtragem de variantes de câncer somáticas do VCF até o Cancer Genome interpreter (CGI), na busca de distinguir variantes drivers ou passengers de câncer do seu VCF! Neste exemplo específico, iremos processar a amostra **WP048**. Ao final, teremos o link do Google Colab, que demonstra o mesmo pipeline aplicado para as amostras **WP017, WP019, WP058 e WP068**. E também, uma tabela geral, que reúne informações das 5 amostras analisadas.
 
 **1. Clonar o git imabrasil-hg38**
