@@ -217,7 +217,7 @@ Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packag
 Imprimir tabela com alterações: 
 
 ```python
-Import pandas as pd
+import pandas as pd
 pd.read_csv('/content/results/WP048/alterations.tsv',sep='\t', index_col=False, engine= 'python')
 
 ```
